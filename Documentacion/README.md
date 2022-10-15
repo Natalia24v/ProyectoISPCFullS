@@ -3,3 +3,4 @@
 * Se cargó el diagrama entidad relacion del sistema
 * Asignacion de tareas
 * Se cargó el diagrama de clase de uso
+* Añadido diagrama de DB
