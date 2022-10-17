@@ -1,0 +1,14 @@
+Historias de usuarios y tareas By:NATALIA 
+Base para usuarios:
+#US01 Como administrador quiero crear una página web para reservas de citas en línea.
+#US02 Como administrador quiero tener privilegios para realizar cambios en el sitio web.
+#US03 Como administrador quiero tener privilegios para elegir que pueden ver y hacer los usuarios en la página web.
+#US04 Como usuario quiero registrarme en el sitio para crear mi perfil.
+#US05 Como usuario quiero hacer un comentario en el chat para consultar un tema específico.
+#US06 Como usuario quiero recibir recomendaciones para conocer personas.
+Tareas:
+#TK01 Crear un archivo índex para el maquetado de la pagina
+#TK02 Crear historias(US) y tareas (TK).
+#TK03 Crear login para los usuarios.
+#TK04 Integrar chat en el sitio web
+#TK05 Crear base de datos.
