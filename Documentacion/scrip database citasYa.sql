@@ -66,4 +66,4 @@ ALTER TABLE unmatch ADD CONSTRAINT unmatch_id_usuario_Usuario_id_usuario FOREIGN
 ALTER TABLE unmatch ADD CONSTRAINT unmatch_bloqueado_match_bloqueo FOREIGN KEY (bloqueado) REFERENCES match1(bloqueo);
 ALTER TABLE unmatch ADD CONSTRAINT unmatch_reporte_de_usuario_mensajes_reporte_de_usuario FOREIGN KEY (reporte_de_usuario) REFERENCES mensajes (reporte_de_usuario);
 
-select * from mensajes
+select * from mensajessys_configsys_configsys_config
