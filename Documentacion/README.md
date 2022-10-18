@@ -6,4 +6,4 @@
 * Añadido archivo .sql con la base de datos
 * añadido diagrama entidad relacion
 * Añadido Diagrama de clases
-* Agregado archivo .py con las clases
+* Agregado archivo .py con las clases(sin funciones)
