@@ -12,6 +12,9 @@ bio_personal VARCHAR(600) NOT NULL,
 limite_distancia INT NOT NULL,
 id_locacion VARCHAR(64) NOT NULL UNIQUE,
 rango_edad INT NOT NULL);
+INSERT INTO match1(id_usuario,nombres,apellido,edad,genero,interes,bio_personal,limite_distancia,id_locacion,rango_edad)
+VALUES('197','Eddie','Van Halen','65','M','Sin especificar','Músico neerlandés-estadounidense','10km','5000','55-70')
+
 
 CREATE TABLE locacion (
 id_locacion VARCHAR(64) PRIMARY KEY NOT NULL UNIQUE,
