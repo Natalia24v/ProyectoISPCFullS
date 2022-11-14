@@ -7,3 +7,4 @@
 * añadido diagrama entidad relacion
 * Añadido Diagrama de clases
 * Agregado archivo .py con las clases(sin funciones)
+* Se agregaron los enlaces Css que faltaban del Sprint 1
