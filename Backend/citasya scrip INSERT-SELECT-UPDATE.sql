@@ -30,6 +30,9 @@ like_id VARCHAR(64) PRIMARY KEY NOT NULL UNIQUE,
 id_usuario VARCHAR(30) NOT NULL UNIQUE,
 lista_likes_dislikes VARCHAR(100) NOT NULL,
 id_usuario_likeado VARCHAR(64) NOT NULL UNIQUE);
+INSERT INTO match1(like_id,id_usuario,lista_likes_dislikes,id_usuario_likeado)
+VALUES('301','Ronnie','Dio','55','M','Sin especificar','Músico estadounidense','20km','3000','55-70')
+
 
 CREATE TABLE superlike (
 id_superlike VARCHAR(64) PRIMARY KEY NOT NULL UNIQUE,
