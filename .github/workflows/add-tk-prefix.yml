@@ -7,12 +7,35 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Add TK prefix to new issue
-        uses: peter-evans/add-issue-labels@v1.3.2
-        with:
-          labels: '[TK-{{ github.event.issue.number }}], 2023'
+        run: |
+          number=$(curl -s -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+            -X GET https://api.github.com/repos/${{ github.repository }}/issues/${{ github.event.issue.number }} \
+            | jq -r '.number')
+          title=$(curl -s -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+            -X GET https://api.github.com/repos/${{ github.repository }}/issues/${{ github.event.issue.number }} \
+            | jq -r '.title')
+          new_title="[TK-${number}] ${title}"
+          curl -s -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+            -X PATCH https://api.github.com/repos/${{ github.repository }}/issues/${{ github.event.issue.number }} \
+            -d "{\"title\":\"${new_title}\"}"
       - name: Add new issue to active project
-        uses: ahmadawais/add-new-issue-to-github-project@v2.4.0
+        if: always()
+        run: |
+          project_url=$(curl -s -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+            -X GET https://api.github.com/repos/${{ github.repository }}/projects \
+            | jq -r '.[] | select(.name == "Grupo 28 - CitasYa") | .url')
+          if [ ! -z "$project_url" ]; then
+            project_id=$(echo $project_url | sed 's/.*\/\([0-9]\+\)$/\1/')
+            column_url=$(curl -s -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+              -X GET https://api.github.com/projects/${project_id}/columns \
+              | jq -r '.[0].url')
+            if [ ! -z "$column_url" ]; then
+              column_id=$(echo $column_url | sed 's/.*\/\([0-9]\+\)$/\1/')
+              curl -s -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+                -X POST https://api.github.com/projects/columns/${column_id}/cards \
+                -d "{\"content_id\":${{ github.event.issue.number }},\"content_type\":\"Issue\"}"
+            fi
+          fi
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          project_name: "Grupo 28 - CitasYa"
+
