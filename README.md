@@ -15,10 +15,7 @@ Este proyecto ha sido desarrollado por un equipo de estudiantes de segundo año 
 - [Leyton, William](https://github.com/WLeyton89)                (Back-end Developer, Trainee)
 - [Leyton, Alejandro](https://github.com/Leytonale)              (Scrum Master, Trainee)
 
-## Requerimientos del proyecto
-Los requerimientos funcionales y no funcionales del proyecto se encuentran descritos en el documento IEEE830 de Especificación de Requerimientos de Software, incluyendo el alcance del sistema, sus objetivos y beneficios, así como las definiciones, acrónimos y abreviaturas utilizadas.
-
-##Metodologias y flujo de trabajo.
+## Metodologias y flujo de trabajo.
 El equipo ha utilizado la metodología Scrum para la gestión del proyecto y el flujo de trabajo Gitflow para el control de versiones. La metodología Scrum ha permitido al equipo trabajar de manera colaborativa, enfocarse en el desarrollo iterativo y mantener una comunicación constante con el cliente. El flujo de trabajo Gitflow ha permitido al equipo trabajar de manera eficiente en ramas separadas para desarrollar nuevas funcionalidades, arreglar bugs y realizar pruebas, antes de integrar el código en la rama principal del proyecto.
 
 En el flujo de trabajo Gitflow utilizado por el equipo, se utilizan varias ramas para organizar el trabajo y facilitar la colaboración. A continuación se describen brevemente cada una de las ramas utilizadas:
