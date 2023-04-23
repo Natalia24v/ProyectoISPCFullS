@@ -1,4 +1,4 @@
-# Proyecto ISPC FullStack - CitasYa
+# Proyecto ISPC FullStack - APP CitasYa
 
 ## Descripción
 "CitasYa" es una aplicación web y móvil que facilita el encuentro y la comunicación entre personas que buscan establecer relaciones de todo tipo, desde amistades hasta parejas románticas. Con una interfaz intuitiva y una gran variedad de opciones de personalización, "CitasYa" ofrece una experiencia única y adaptada a las preferencias y necesidades de cada usuario. 
