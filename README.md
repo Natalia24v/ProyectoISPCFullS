@@ -55,4 +55,4 @@ Las contribuciones al proyecto son bienvenidas. Para contribuir, se deben seguir
 4. Hacer un pull request con los cambios realizados.
 
 ## Licencia
-Este proyecto se encuentra bajo la Licencia [Especificar la licencia utilizada].
+Este proyecto se encuentra bajo la Licencia .
