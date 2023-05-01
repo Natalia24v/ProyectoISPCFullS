@@ -1,6 +1,53 @@
 name: Add US prefix and label to new issues
 on:
+  issues:name: Add US prefix and label to new issues
+on:
   issues:
+    types: [opened]
+jobs:
+  add-us-prefix-and-label:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check latest US issue number
+        run: |
+          last_us_issue=$(curl -s -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+            -X GET "https://api.github.com/repos/${{ github.repository }}/issues?state=all" \
+            | jq -r '.[].title | select(. | test("\\[US-[0-9]+\\]")) | match("\\d+") | .string' \
+            | sort -n \
+            | tail -n1 || echo 0)
+          echo "LAST_US_ISSUE=$last_us_issue" >> $GITHUB_ENV
+      - name: Add US prefix to new issue
+        if: contains(github.event.issue.title, 'Como') && contains(github.event.issue.title, 'Quiero')
+        run: |
+          number=$((${{ env.LAST_US_ISSUE }} + 1))
+          title=$(curl -s -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+            -X GET "https://api.github.com/repos/${{ github.repository }}/issues/${{ github.event.issue.number }}" \
+            | jq -r '.title')
+          new_title="[US-${number}] ${title}"
+          curl -s -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+            -X PATCH "https://api.github.com/repos/${{ github.repository }}/issues/${{ github.event.issue.number }}" \
+            -d "{\"title\":\"${new_title}\"}"
+      - name: Add new issue to active project
+        if: always()
+        run: |
+          project_url=$(curl -s -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+            -X GET "https://api.github.com/repos/${{ github.repository }}/projects" \
+            | jq -r '.[] | select(.name == "Grupo 28 - CitasYa") | .url')
+          if [ ! -z "$project_url" ]; then
+            project_id=$(echo $project_url | sed 's/.*\/\([0-9]\+\)$/\1/')
+            column_url=$(curl -s -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+              -X GET "https://api.github.com/projects/${project_id}/columns" \
+              | jq -r '.[0].url')
+            if [ ! -z "$column_url" ]; then
+              column_id=$(echo $column_url | sed 's/.*\/\([0-9]\+\)$/\1/')
+              curl -s -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+                -X POST "https://api.github.com/projects/columns/${column_id}/cards" \
+                -d "{\"content_id\":${{ github.event.issue.number }},\"content_type\":\"Issue\"}"
+            fi
+          fi
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
     types: [opened]
 jobs:
   add-us-prefix-and-label:
