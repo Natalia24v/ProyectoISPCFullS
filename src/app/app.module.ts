@@ -3,19 +3,26 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { HeaderComponent } from './shared/header/header.component';
 import { NavbarComponent } from './shared/navbar/navbar.component';
 import { FooterComponent } from './shared/footer/footer.component';
-import { HeaderComponent } from './shared/header/header.component';
+import { TextoComponent } from './shared/texto/texto.component';
+import { Texto2Component } from './shared/texto2/texto2.component';
 
 @NgModule({
   declarations: [ 
+    AppComponent,
+    HeaderComponent,
     NavbarComponent,
     FooterComponent,
-    HeaderComponent
+    TextoComponent,
+    Texto2Component
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    
+
   ],
   providers: [],
   bootstrap: [AppComponent]
