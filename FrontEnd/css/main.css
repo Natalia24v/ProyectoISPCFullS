@@ -45,6 +45,7 @@ footer {
     min-height: 100px;
 }
 footer p {
+    background: #1b2a4e;
     color: #f3f3f3;
     text-align: center;
 }
