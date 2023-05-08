@@ -45,13 +45,13 @@ footer {
     min-height: 100px;
 }
 footer p {
-    color: #f3f3f3;
+    color: #071592;
     text-align: center;
 }
 #iconos i {
     font-size: 26px;
     padding: 0 8px;
-    color: #f3f3f3;
+    color: #0d0d0e;
 }
 @media (max-width:576px){
     .icono-wrap{
@@ -64,3 +64,5 @@ footer p {
 
 } 
 }
+
+
