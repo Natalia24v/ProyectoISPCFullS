@@ -21,8 +21,8 @@ id_locacion VARCHAR(64) PRIMARY KEY NOT NULL UNIQUE,
 nombre_calle VARCHAR(100) NOT NULL,
 numero_direccion INT(100) NOT NULL,
 barrio VARCHAR(64) NOT NULL,
-provincia  VARCHAR(64) NOT NULL,
-Ciudad  VARCHAR(64) NOT NULL,
+provincia VARCHAR(64) NOT NULL,
+Ciudad VARCHAR(64) NOT NULL,
 pais VARCHAR(64) NOT NULL);
 
 CREATE TABLE liked (
@@ -77,7 +77,7 @@ ALTER TABLE superlike ADD CONSTRAINT superlike_id_usuario_Usuario_id_usuario FOR
 ALTER TABLE match1 ADD CONSTRAINT match_id_usuario_Usuario_id_usuario FOREIGN KEY (id_usuario) REFERENCES Usuario(id_usuario);
 ALTER TABLE match1 ADD CONSTRAINT match_id_usuario_likeado_like_like_id FOREIGN KEY (id_usuario_likeado) REFERENCES liked(like_id);
 ALTER TABLE match1 ADD CONSTRAINT match_id_superlike_superlike_id_superlike FOREIGN KEY (id_superlike) REFERENCES superlike(id_superlike);
-ALTER TABLE mensajes  ADD CONSTRAINT mensajes_id_match_match_id_match FOREIGN KEY (id_match) REFERENCES match1(id_match);
+ALTER TABLE mensajes ADD CONSTRAINT mensajes_id_match_match_id_match FOREIGN KEY (id_match) REFERENCES match1(id_match);
 ALTER TABLE unmatch ADD CONSTRAINT unmatch_id_usuario_Usuario_id_usuario FOREIGN KEY (id_usuario) REFERENCES Usuario(id_usuario);
 ALTER TABLE unmatch ADD CONSTRAINT unmatch_bloqueado_match_bloqueo FOREIGN KEY (bloqueado) REFERENCES match1(bloqueo);
 ALTER TABLE unmatch ADD CONSTRAINT unmatch_reporte_de_usuario_mensajes_reporte_de_usuario FOREIGN KEY (reporte_de_usuario) REFERENCES mensajes (reporte_de_usuario);
