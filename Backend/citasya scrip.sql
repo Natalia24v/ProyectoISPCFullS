@@ -1,68 +1,138 @@
-use citasya;
+SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
+SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
+SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
 
-create TABLE Usuario (
-id_usuario VARCHAR(30) PRIMARY KEY NOT NULL UNIQUE,
-nombres VARCHAR(40) NOT NULL,
-apellido  VARCHAR(30) NOT NULL,
-edad INT NOT NULL,
-genero CHAR NOT NULL,
-interes VARCHAR(100) NOT NULL,
-bio_personal VARCHAR(600) NOT NULL,
-limite_distancia INT NOT NULL,
-id_locacion VARCHAR(64) NOT NULL UNIQUE,
-rango_edad INT NOT NULL);
+CREATE SCHEMA IF NOT EXISTS `citasya` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci ;
+USE `citasya` ;
 
-CREATE TABLE locacion (
-id_locacion VARCHAR(64) PRIMARY KEY NOT NULL UNIQUE,
-nombre_calle VARCHAR(100) NOT NULL,
-numero_direccion INT(100) NOT NULL,
-barrio VARCHAR(64) NOT NULL,
-provincia  VARCHAR(64) NOT NULL,
-Ciudad  VARCHAR(64) NOT NULL,
-pais VARCHAR(64) NOT NULL);
+CREATE TABLE IF NOT EXISTS `citasya`.`usuario` (
+  `id_usuario` VARCHAR(30) NOT NULL,
+  `nombres` VARCHAR(40) NOT NULL,
+  `apellido` VARCHAR(30) NOT NULL,
+  `edad` INT NOT NULL,
+  `genero` CHAR(1) NOT NULL,
+  `interes` VARCHAR(100) NOT NULL,
+  `bio_personal` VARCHAR(600) NOT NULL,
+  `limite_distancia` INT NOT NULL,
+  `id_locacion` VARCHAR(64) NOT NULL,
+  `rango_edad` INT NOT NULL,
+  PRIMARY KEY (`id_usuario`),
+  UNIQUE INDEX `id_usuario` (`id_usuario` ASC) ,
+  UNIQUE INDEX `id_locacion` (`id_locacion` ASC) )
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
 
-CREATE TABLE liked (
-like_id VARCHAR(64) PRIMARY KEY NOT NULL UNIQUE,
-id_usuario VARCHAR(30) NOT NULL UNIQUE,
-lista_likes_dislikes VARCHAR(100) NOT NULL,
-id_usuario_likeado VARCHAR(64) NOT NULL UNIQUE);
+CREATE TABLE IF NOT EXISTS `citasya`.`liked` (
+  `like_id` VARCHAR(64) NOT NULL,
+  `id_usuario` VARCHAR(30) NOT NULL,
+  `lista_likes_dislikes` VARCHAR(100) NOT NULL,
+  `id_usuario_likeado` VARCHAR(64) NOT NULL,
+  PRIMARY KEY (`like_id`),
+  UNIQUE INDEX `like_id` (`like_id` ASC) ,
+  UNIQUE INDEX `id_usuario` (`id_usuario` ASC) ,
+  UNIQUE INDEX `id_usuario_likeado` (`id_usuario_likeado` ASC) ,
+  CONSTRAINT `like_id_usuario_Usuario_id_usuario`
+    FOREIGN KEY (`id_usuario`)
+    REFERENCES `citasya`.`usuario` (`id_usuario`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
 
-CREATE TABLE superlike (
-id_superlike VARCHAR(64) PRIMARY KEY NOT NULL UNIQUE,
-id_usuario VARCHAR(30) NOT NULL UNIQUE,
-id_usuario_superlikeado VARCHAR(30) NOT NULL UNIQUE);
+CREATE TABLE IF NOT EXISTS `citasya`.`locacion` (
+  `id_locacion` VARCHAR(64) NOT NULL,
+  `nombre_calle` VARCHAR(100) NOT NULL,
+  `numero_direccion` INT NOT NULL,
+  `barrio` VARCHAR(64) NOT NULL,
+  `provincia` VARCHAR(64) NOT NULL,
+  `Ciudad` VARCHAR(64) NOT NULL,
+  `pais` VARCHAR(64) NOT NULL,
+  PRIMARY KEY (`id_locacion`),
+  UNIQUE INDEX `id_locacion` (`id_locacion` ASC) )
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
 
-CREATE TABLE match1 (
-id_match VARCHAR(64) PRIMARY KEY NOT NULL UNIQUE,
-id_usuario VARCHAR(30) NOT NULL UNIQUE,
-id_usuario_likeado VARCHAR(64) NOT NULL UNIQUE,
-id_superlike VARCHAR(64) NOT NULL UNIQUE,
-bloqueo VARCHAR(600) NOT NULL);
+CREATE TABLE IF NOT EXISTS `citasya`.`superlike` (
+  `id_superlike` VARCHAR(64) NOT NULL,
+  `id_usuario` VARCHAR(30) NOT NULL,
+  `id_usuario_superlikeado` VARCHAR(30) NOT NULL,
+  PRIMARY KEY (`id_superlike`),
+  UNIQUE INDEX `id_superlike` (`id_superlike` ASC) ,
+  UNIQUE INDEX `id_usuario` (`id_usuario` ASC) ,
+  UNIQUE INDEX `id_usuario_superlikeado` (`id_usuario_superlikeado` ASC) ,
+  CONSTRAINT `superlike_id_usuario_Usuario_id_usuario`
+    FOREIGN KEY (`id_usuario`)
+    REFERENCES `citasya`.`usuario` (`id_usuario`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
 
-CREATE TABLE mensajes  (
-chat_id VARCHAR(600) PRIMARY KEY NOT NULL UNIQUE,
-id_match VARCHAR(64) NOT NULL UNIQUE,
-receptor VARCHAR(64) NOT NULL,
-contenido VARCHAR(600) NOT NULL,
-reporte_de_usuario VARCHAR(600) NOT NULL);
+CREATE TABLE IF NOT EXISTS `citasya`.`match1` (
+  `id_match` VARCHAR(64) NOT NULL,
+  `id_usuario` VARCHAR(30) NOT NULL,
+  `id_usuario_likeado` VARCHAR(64) NOT NULL,
+  `id_superlike` VARCHAR(64) NOT NULL,
+  `bloqueo` VARCHAR(600) NOT NULL,
+  PRIMARY KEY (`id_match`),
+  UNIQUE INDEX `id_match` (`id_match` ASC) ,
+  UNIQUE INDEX `id_usuario` (`id_usuario` ASC) ,
+  UNIQUE INDEX `id_usuario_likeado` (`id_usuario_likeado` ASC) ,
+  UNIQUE INDEX `id_superlike` (`id_superlike` ASC) ,
+  CONSTRAINT `match_id_superlike_superlike_id_superlike`
+    FOREIGN KEY (`id_superlike`)
+    REFERENCES `citasya`.`superlike` (`id_superlike`),
+  CONSTRAINT `match_id_usuario_Usuario_id_usuario`
+    FOREIGN KEY (`id_usuario`)
+    REFERENCES `citasya`.`usuario` (`id_usuario`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
 
-CREATE TABLE unmatch (
-id_usuario VARCHAR(64) NOT NULL UNIQUE,
-id_causa VARCHAR(600) PRIMARY KEY NOT NULL UNIQUE,
-bloqueado VARCHAR(600) NOT NULL,
-reporte_de_usuario VARCHAR(600) NOT NULL);
+CREATE TABLE IF NOT EXISTS `citasya`.`mensajes` (
+  `chat_id` VARCHAR(600) NOT NULL,
+  `id_match` VARCHAR(64) NOT NULL,
+  `receptor` VARCHAR(64) NOT NULL,
+  `contenido` VARCHAR(600) NOT NULL,
+  `reporte_de_usuario` VARCHAR(600) NOT NULL,
+  PRIMARY KEY (`chat_id`),
+  UNIQUE INDEX `chat_id` (`chat_id` ASC) ,
+  UNIQUE INDEX `id_match` (`id_match` ASC) )
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
 
 
+CREATE TABLE IF NOT EXISTS `citasya`.`unmatch` (
+  `id_usuario` VARCHAR(64) NOT NULL,
+  `id_causa` VARCHAR(600) NOT NULL,
+  `bloqueado` VARCHAR(600) NOT NULL,
+  `reporte_de_usuario` VARCHAR(600) NOT NULL,
+  PRIMARY KEY (`id_causa`),
+  UNIQUE INDEX `id_usuario` (`id_usuario` ASC) ,
+  UNIQUE INDEX `id_causa` (`id_causa` ASC) ,
+  CONSTRAINT `unmatch_id_usuario_Usuario_id_usuario`
+    FOREIGN KEY (`id_usuario`)
+    REFERENCES `citasya`.`usuario` (`id_usuario`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
 
-ALTER TABLE Usuario ADD CONSTRAINT Usuario_id_locacion_locacion_id_locacion FOREIGN KEY (id_locacion) REFERENCES locacion(id_locacion);
-ALTER TABLE liked ADD CONSTRAINT like_id_usuario_Usuario_id_usuario FOREIGN KEY (id_usuario) REFERENCES Usuario(id_usuario);
-ALTER TABLE superlike ADD CONSTRAINT superlike_id_usuario_Usuario_id_usuario FOREIGN KEY (id_usuario) REFERENCES Usuario(id_usuario);
-ALTER TABLE match1 ADD CONSTRAINT match_id_usuario_Usuario_id_usuario FOREIGN KEY (id_usuario) REFERENCES Usuario(id_usuario);
-ALTER TABLE match1 ADD CONSTRAINT match_id_usuario_likeado_like_like_id FOREIGN KEY (id_usuario_likeado) REFERENCES liked(like_id);
-ALTER TABLE match1 ADD CONSTRAINT match_id_superlike_superlike_id_superlike FOREIGN KEY (id_superlike) REFERENCES superlike(id_superlike);
-ALTER TABLE mensajes  ADD CONSTRAINT mensajes_id_match_match_id_match FOREIGN KEY (id_match) REFERENCES match1(id_match);
-ALTER TABLE unmatch ADD CONSTRAINT unmatch_id_usuario_Usuario_id_usuario FOREIGN KEY (id_usuario) REFERENCES Usuario(id_usuario);
-ALTER TABLE unmatch ADD CONSTRAINT unmatch_bloqueado_match_bloqueo FOREIGN KEY (bloqueado) REFERENCES match1(bloqueo);
-ALTER TABLE unmatch ADD CONSTRAINT unmatch_reporte_de_usuario_mensajes_reporte_de_usuario FOREIGN KEY (reporte_de_usuario) REFERENCES mensajes (reporte_de_usuario);
+CREATE TABLE IF NOT EXISTS `citasya`.`usuariospremiun` (
+  `id_usuario_premiun` INT NOT NULL,
+  `id_usuariousuario` VARCHAR(30) NOT NULL,
+  `plan` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`id_usuario_premiun`),
+  UNIQUE INDEX `id_usuario_UNIQUE` (`id_usuariousuario` ASC) ,
+  UNIQUE INDEX `id_usuario_premiun_UNIQUE` (`id_usuario_premiun` ASC) ,
+  CONSTRAINT `id_usuario`
+    FOREIGN KEY (`id_usuariousuario`)
+    REFERENCES `citasya`.`usuario` (`id_usuario`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
 
-select * from mensajessys_configsys_configsys_config
+
+SET SQL_MODE=@OLD_SQL_MODE;
+SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
+SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
